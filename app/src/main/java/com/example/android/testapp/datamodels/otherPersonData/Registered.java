@@ -1,4 +1,4 @@
-package com.example.android.testapp.datamodels;
+package com.example.android.testapp.datamodels.otherPersonData;
 
 public class Registered {
         private String date;

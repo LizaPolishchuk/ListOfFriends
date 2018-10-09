@@ -1,6 +1,6 @@
-package com.example.android.testapp.retrofit;
+package com.example.android.testapp.databaseAndRetrofit;
 
-import com.example.android.testapp.datamodels.Results;
+import com.example.android.testapp.datamodels.otherPersonData.Results;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

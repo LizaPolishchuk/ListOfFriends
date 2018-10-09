@@ -1,17 +1,12 @@
-package com.example.android.testapp.retrofit;
+package com.example.android.testapp.modelMVP;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.example.android.testapp.App;
-import com.example.android.testapp.MyAdapter;
-import com.example.android.testapp.database.DatabaseHelper;
+import com.example.android.testapp.databaseAndRetrofit.DatabaseHelper;
 import com.example.android.testapp.datamodels.Person;
-import com.example.android.testapp.datamodels.Results;
+import com.example.android.testapp.datamodels.otherPersonData.Results;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,33 +19,21 @@ import retrofit2.Response;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
-//In this class we check the Internet connection and depending on it run the following methods.
+public class ModelData implements Contract.Model {
 
-public class WorkWithRetrofit {
     private DatabaseHelper database = App.getInstance().getDatabase();
     private Call<Results> resultsCall = App.getInstance().getInterface().results();
-
     private List<Person> personList = new ArrayList<>();
-    private MyAdapter myAdapter = new MyAdapter(App.getInstance().getContext(), personList);
-
-    private TextView tvConnection;
-    private RecyclerView recyclerView;
 
     private Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
-            if(hasConnection()){
+            if (hasConnection()) {
                 database.getDaoPerson().deleteAll(database.getDaoPerson().getAllPersons());
                 database.getDaoPerson().insertInDbList(personList);
-            } else {
-                personList.addAll(database.getDaoPerson().getAllPersons());
             }
         }
     });
-    public WorkWithRetrofit(RecyclerView recyclerView, TextView tvConnection) {
-        this.recyclerView = recyclerView;
-        this.tvConnection = tvConnection;
-    }
 
     //Checking the Internet connection
     private static boolean hasConnection() {
@@ -71,17 +54,12 @@ public class WorkWithRetrofit {
         return false;
     }
 
-    public MyAdapter getMyAdapter() {
-        return myAdapter;
-    }
-
     //Get the data
-    public void getTheList() {
+    @Override
+    public void getPersonList(final OnFinishedListener onFinishedListener) {
+
         //If we have Internet connection get the data from api by Retrofit
         if (hasConnection()) {
-            recyclerView.setVisibility(View.VISIBLE);
-            tvConnection.setVisibility(View.GONE);
-
             resultsCall.enqueue(new Callback<Results>() {
                 @Override
                 public void onResponse(Call<Results> call, Response<Results> response) {
@@ -98,22 +76,20 @@ public class WorkWithRetrofit {
                         }
                     });
                     thread.start();
-                    myAdapter.notifyDataSetChanged();
+                    onFinishedListener.onFinish(personList);
                 }
 
                 @Override
                 public void onFailure(Call<Results> call, Throwable t) {
-                    Log.d("myLogs", "onFailure " + t);
+                    onFinishedListener.onFailure(t);
                 }
             });
 
             //If we have not Internet connection get the data from database by Room
         } else {
-            tvConnection.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            thread.start();
-            myAdapter.notifyDataSetChanged();
+            personList.addAll(database.getDaoPerson().getAllPersons());
+            onFinishedListener.onFinish(personList);
         }
     }
-
 }
+

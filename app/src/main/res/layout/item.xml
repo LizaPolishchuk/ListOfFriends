@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
     android:orientation="vertical">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/image_person"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_margin="@dimen/margin_15"
-        android:contentDescription="pirsonImage"/>
-    <TextView
-        android:id="@+id/tv_name_person"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_15"
-        android:layout_toRightOf="@id/image_person"
-        android:textSize="@dimen/text_name_size" />
-    <TextView
-        android:id="@+id/tv_gender_person"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_name_person"
-        android:layout_toRightOf="@id/image_person"
-        android:textSize="@dimen/text_size"/>
-</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/image_person"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_margin="@dimen/margin_15"
+            android:contentDescription="@string/photo_person" />
+
+        <TextView
+            android:id="@+id/tv_name_person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_15"
+            android:layout_toEndOf="@id/image_person"
+            android:layout_toRightOf="@id/image_person"
+            android:textSize="@dimen/text_name_size" />
+
+        <TextView
+            android:id="@+id/tv_gender_person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_name_person"
+            android:layout_toEndOf="@id/image_person"
+            android:layout_toRightOf="@id/image_person"
+            android:textSize="@dimen/text_size" />
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>

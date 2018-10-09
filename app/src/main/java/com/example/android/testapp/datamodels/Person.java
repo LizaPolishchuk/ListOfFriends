@@ -5,6 +5,9 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.example.android.testapp.datamodels.otherPersonData.Name;
+import com.example.android.testapp.datamodels.otherPersonData.Picture;
+import com.example.android.testapp.datamodels.otherPersonData.Registered;
 import com.google.gson.annotations.SerializedName;
 
 @Entity

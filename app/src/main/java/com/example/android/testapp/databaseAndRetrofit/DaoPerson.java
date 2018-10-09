@@ -1,4 +1,4 @@
-package com.example.android.testapp.database;
+package com.example.android.testapp.databaseAndRetrofit;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;

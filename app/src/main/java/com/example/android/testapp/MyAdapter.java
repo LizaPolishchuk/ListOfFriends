@@ -17,12 +17,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private Context context;
     private List<Person> personList;
 
-     public MyAdapter(Context context, List<Person> personList) {
+    public MyAdapter(Context context, List<Person> personList) {
         this.context = context;
         this.personList = personList;
     }
@@ -74,16 +77,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_name_person)
         TextView namePerson;
+        @BindView(R.id.tv_gender_person)
         TextView genderPerson;
+        @BindView(R.id.image_person)
         ImageView imagePerson;
+
         Bundle bundle;
 
         MyViewHolder(View itemView) {
             super(itemView);
-            namePerson = (TextView) itemView.findViewById(R.id.tv_name_person);
-            genderPerson = (TextView) itemView.findViewById(R.id.tv_gender_person);
-            imagePerson = (ImageView) itemView.findViewById(R.id.image_person);
+            ButterKnife.bind(this, itemView);
             bundle = new Bundle();
         }
     }
