@@ -1,4 +1,4 @@
-package com.example.android.testapp.databaseAndRetrofit;
+package com.example.android.testapp.retrofit;
 
 import com.example.android.testapp.datamodels.otherPersonData.Results;
 

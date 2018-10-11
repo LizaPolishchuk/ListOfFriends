@@ -1,12 +1,9 @@
-package com.example.android.testapp.modelMVP;
+package com.example.android.testapp.modelMVP.main;
 
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
-import com.example.android.testapp.App;
-import com.example.android.testapp.databaseAndRetrofit.DatabaseHelper;
+import com.example.android.testapp.database.DatabaseHelper;
 import com.example.android.testapp.datamodels.Person;
 import com.example.android.testapp.datamodels.otherPersonData.Results;
+import com.example.android.testapp.utils.CheckingConnection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,49 +14,34 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.Context.CONNECTIVITY_SERVICE;
+public class MainModelData implements MainContract.Model {
 
-public class ModelData implements Contract.Model {
-
-    private DatabaseHelper database = App.getInstance().getDatabase();
-    private Call<Results> resultsCall = App.getInstance().getInterface().results();
+    private DatabaseHelper database;
+    private Call<Results> resultsCall;
     private List<Person> personList = new ArrayList<>();
+
+    public MainModelData(DatabaseHelper database, Call<Results> resultsCall) {
+        this.database = database;
+        this.resultsCall = resultsCall;
+    }
 
     private Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
-            if (hasConnection()) {
                 database.getDaoPerson().deleteAll(database.getDaoPerson().getAllPersons());
                 database.getDaoPerson().insertInDbList(personList);
-            }
         }
     });
 
-    //Checking the Internet connection
-    private static boolean hasConnection() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) App.getInstance().getContext().getSystemService(CONNECTIVITY_SERVICE);
 
-        NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        wifiInfo = connectivityManager.getActiveNetworkInfo();
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        return false;
-    }
-
-    //Get the data
+    /**
+     * Getting the data
+     */
     @Override
     public void getPersonList(final OnFinishedListener onFinishedListener) {
 
-        //If we have Internet connection get the data from api by Retrofit
-        if (hasConnection()) {
+        /**If we have Internet connection get the data from api by Retrofit*/
+        if (CheckingConnection.hasConnection()) {
             resultsCall.enqueue(new Callback<Results>() {
                 @Override
                 public void onResponse(Call<Results> call, Response<Results> response) {
@@ -85,7 +67,7 @@ public class ModelData implements Contract.Model {
                 }
             });
 
-            //If we have not Internet connection get the data from database by Room
+            /** we have not Internet connection get the data from database by Room*/
         } else {
             personList.addAll(database.getDaoPerson().getAllPersons());
             onFinishedListener.onFinish(personList);

@@ -4,8 +4,8 @@ import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
-import com.example.android.testapp.databaseAndRetrofit.ApiInterface;
-import com.example.android.testapp.databaseAndRetrofit.DatabaseHelper;
+import com.example.android.testapp.database.DatabaseHelper;
+import com.example.android.testapp.retrofit.ApiInterface;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,4 +1,4 @@
-package com.example.android.testapp.activities;
+package com.example.android.testapp.modelMVP.about;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +13,10 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//Activity that describe the selected person
-public class AboutActivity extends AppCompatActivity {
-
-    private String name, gender,  email, date;
-    private String image;
+/**
+ * Activity that describe the selected person
+ */
+public class AboutActivity extends AppCompatActivity implements AboutContract.View {
 
     @BindView(R.id.image_about)
     ImageView imageView;
@@ -30,6 +29,8 @@ public class AboutActivity extends AppCompatActivity {
     @BindView(R.id.tv_about_date)
     TextView tvDate;
 
+    AboutContract.Presenter presenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,17 +38,19 @@ public class AboutActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
+        presenter = new AboutPresenter(this);
 
-        name = intent.getStringExtra("name");
-        gender = intent.getStringExtra("gender");
-        email = intent.getStringExtra("email");
-        date = intent.getStringExtra("registered");
-        image = intent.getStringExtra("image");
-
-        setTexts();
+        presenter.getDataFromIntent(intent);
     }
 
-    public void  setTexts(){
+    @Override
+    protected void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void putData(String name, String gender, String email, String date, String image) {
         tvName.setText(name);
         tvGender.setText(gender);
         tvEmail.setText(email);

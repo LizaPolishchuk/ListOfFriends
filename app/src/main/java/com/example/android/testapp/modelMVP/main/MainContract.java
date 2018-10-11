@@ -1,10 +1,10 @@
-package com.example.android.testapp.modelMVP;
+package com.example.android.testapp.modelMVP.main;
 
 import com.example.android.testapp.datamodels.Person;
 
 import java.util.List;
 
-public class Contract {
+public class MainContract {
 
     public interface Model {
         void getPersonList(OnFinishedListener onFinishedListener);
@@ -20,6 +20,10 @@ public class Contract {
         void setDataToRecyclerView(List<Person> personList);
 
         void onResponseFailure(Throwable t);
+
+        void onShowProgressBar();
+
+        void onHideProgressBar();
     }
 
     public interface Presenter {

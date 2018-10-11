@@ -2,5 +2,5 @@
 <resources>
     <dimen name="text_name_size">30sp</dimen>
     <dimen name="text_size">20sp</dimen>
-    <dimen name="margin_15">15dp</dimen>
+    <dimen name="margin_between_bounds_15">15dp</dimen>
 </resources>
