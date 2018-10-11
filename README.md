@@ -5,7 +5,7 @@
 </div>
 <p>This application shows the list of random people. You can choose certain person to see the bigger photo of him and read more detail information about.
 </p>
-<p>This app has two activities: first – with the list and second – with the detail information. Second activity starts when you click on any person in the list.
+<p>This app has two activities: first – with the list and second – with the detail information. Second activity starts when you click on any person in the list. Also in this app used MVP architecture pattern.
 </p>
 <h3>In this app used:
 </h3>
