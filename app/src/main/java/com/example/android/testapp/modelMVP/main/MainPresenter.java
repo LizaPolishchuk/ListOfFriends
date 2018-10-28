@@ -1,13 +1,8 @@
 package com.example.android.testapp.modelMVP.main;
 
-import com.example.android.testapp.App;
-import com.example.android.testapp.database.DatabaseHelper;
 import com.example.android.testapp.datamodels.Person;
-import com.example.android.testapp.datamodels.otherPersonData.Results;
 
 import java.util.List;
-
-import retrofit2.Call;
 
 public class MainPresenter implements MainContract.Presenter, MainContract.Model.OnFinishedListener {
 
@@ -16,9 +11,7 @@ public class MainPresenter implements MainContract.Presenter, MainContract.Model
 
     MainPresenter(MainContract.View view) {
         this.view = view;
-        DatabaseHelper database = App.getInstance().getDatabase();
-        Call<Results> resultsCall = App.getInstance().getInterface().results();
-        model = new MainModelData(database, resultsCall);
+        model = new MainModelData();
     }
 
     @Override

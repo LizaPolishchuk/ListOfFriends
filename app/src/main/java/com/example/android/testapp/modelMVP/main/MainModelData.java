@@ -1,8 +1,9 @@
 package com.example.android.testapp.modelMVP.main;
 
-import com.example.android.testapp.database.DatabaseHelper;
+import com.example.android.testapp.database.MyDatabase;
 import com.example.android.testapp.datamodels.Person;
 import com.example.android.testapp.datamodels.otherPersonData.Results;
+import com.example.android.testapp.retrofit.MyRetrofit;
 import com.example.android.testapp.utils.CheckingConnection;
 
 import java.util.ArrayList;
@@ -16,20 +17,16 @@ import retrofit2.Response;
 
 public class MainModelData implements MainContract.Model {
 
-    private DatabaseHelper database;
-    private Call<Results> resultsCall;
     private List<Person> personList = new ArrayList<>();
-
-    public MainModelData(DatabaseHelper database, Call<Results> resultsCall) {
-        this.database = database;
-        this.resultsCall = resultsCall;
-    }
+    private MyRetrofit myRetrofit = new MyRetrofit();
+    private MyDatabase myDatabase = new MyDatabase();
 
     private Thread thread = new Thread(new Runnable() {
         @Override
         public void run() {
-                database.getDaoPerson().deleteAll(database.getDaoPerson().getAllPersons());
-                database.getDaoPerson().insertInDbList(personList);
+            myDatabase.getDaoPerson().deleteAll(myDatabase.getDaoPerson().getAllPersons());
+            myDatabase.getDaoPerson().insertInDbList(personList);
+
         }
     });
 
@@ -42,7 +39,8 @@ public class MainModelData implements MainContract.Model {
 
         /**If we have Internet connection get the data from api by Retrofit*/
         if (CheckingConnection.hasConnection()) {
-            resultsCall.enqueue(new Callback<Results>() {
+
+            myRetrofit.getApiPerson().results().enqueue(new Callback<Results>() {
                 @Override
                 public void onResponse(Call<Results> call, Response<Results> response) {
 
@@ -69,7 +67,7 @@ public class MainModelData implements MainContract.Model {
 
             /** we have not Internet connection get the data from database by Room*/
         } else {
-            personList.addAll(database.getDaoPerson().getAllPersons());
+            personList.addAll(myDatabase.getDaoPerson().getAllPersons());
             onFinishedListener.onFinish(personList);
         }
     }

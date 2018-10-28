@@ -13,7 +13,7 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 public class CheckingConnection {
 
     public static boolean hasConnection() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) App.getInstance().getContext().getSystemService(CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) App.getInstance().getSystemService(CONNECTIVITY_SERVICE);
 
         NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (wifiInfo != null && wifiInfo.isConnected()) {
