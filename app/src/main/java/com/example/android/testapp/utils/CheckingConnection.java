@@ -3,8 +3,6 @@ package com.example.android.testapp.utils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.example.android.testapp.App;
-
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
 /**

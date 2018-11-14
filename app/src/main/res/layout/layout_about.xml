@@ -38,7 +38,7 @@
         android:textSize="@dimen/text_size" />
 
     <TextView
-        android:id="@+id/tv_about_emile"
+        android:id="@+id/tv_about_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/image_about"

@@ -1,13 +1,13 @@
-package com.example.android.testapp.datamodels;
+package com.example.android.testapp.data;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.example.android.testapp.datamodels.otherPersonData.Name;
-import com.example.android.testapp.datamodels.otherPersonData.Picture;
-import com.example.android.testapp.datamodels.otherPersonData.Registered;
+import com.example.android.testapp.data.otherPersonData.Name;
+import com.example.android.testapp.data.otherPersonData.Picture;
+import com.example.android.testapp.data.otherPersonData.Registered;
 import com.google.gson.annotations.SerializedName;
 
 @Entity

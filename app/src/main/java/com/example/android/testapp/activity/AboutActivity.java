@@ -1,4 +1,4 @@
-package com.example.android.testapp.modelMVP.about;
+package com.example.android.testapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.testapp.R;
+import com.example.android.testapp.utils.IntentAbout;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -16,7 +17,7 @@ import butterknife.ButterKnife;
 /**
  * Activity that describe the selected person
  */
-public class AboutActivity extends AppCompatActivity implements AboutContract.View {
+public class AboutActivity extends AppCompatActivity {
 
     @BindView(R.id.image_about)
     ImageView imageView;
@@ -24,12 +25,10 @@ public class AboutActivity extends AppCompatActivity implements AboutContract.Vi
     TextView tvName;
     @BindView(R.id.tv_about_gender)
     TextView tvGender;
-    @BindView(R.id.tv_about_emile)
+    @BindView(R.id.tv_about_email)
     TextView tvEmail;
     @BindView(R.id.tv_about_date)
     TextView tvDate;
-
-    AboutContract.Presenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,24 +37,11 @@ public class AboutActivity extends AppCompatActivity implements AboutContract.Vi
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        presenter = new AboutPresenter(this);
 
-        presenter.getDataFromIntent(intent);
-    }
-
-    @Override
-    protected void onDestroy() {
-        presenter.onDestroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void putData(String name, String gender, String email, String date, String image) {
-        tvName.setText(name);
-        tvGender.setText(gender);
-        tvEmail.setText(email);
-        tvDate.setText(date);
-
-        Picasso.get().load(image).into(imageView);
+        tvName.setText(intent.getStringExtra(IntentAbout.STRING_NAME));
+        tvGender.setText(intent.getStringExtra(IntentAbout.STRING_GENDER));
+        tvEmail.setText(intent.getStringExtra(IntentAbout.STRING_EMAIL));
+        tvDate.setText(intent.getStringExtra(IntentAbout.STRING_REGISTERED));
+        Picasso.get().load(intent.getStringExtra(IntentAbout.STRING_IMAGE)).into(imageView);
     }
 }

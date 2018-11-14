@@ -5,7 +5,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
-import com.example.android.testapp.datamodels.Person;
+import com.example.android.testapp.data.Person;
 
 import java.util.List;
 
