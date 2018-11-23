@@ -11,7 +11,7 @@
 </h3>
 <ul>
 	<li>&nbsp;RecyclerView to show the list of cardViews with all the people;</li>
-	<li>&nbsp;Retrofit2 to take the information from api and put to the list</li>
-	<li>&nbsp;Room to cache the data using database</li>
-	<li>&nbsp;SwipeToRefresh to refresh the data</li>
+	<li>&nbsp;Retrofit2 to take the information from api and put to the list;</li>
+	<li>&nbsp;Room to cache the data using database;</li>
+	<li>&nbsp;Paging Library to load data</li>
 </ul>
