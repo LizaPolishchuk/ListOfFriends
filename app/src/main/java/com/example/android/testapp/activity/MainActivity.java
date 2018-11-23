@@ -16,8 +16,10 @@ import android.widget.ProgressBar;
 
 import com.example.android.testapp.R;
 import com.example.android.testapp.data.Person;
-import com.example.android.testapp.database.MyDatabase;
-import com.example.android.testapp.network.MyRetrofit;
+import com.example.android.testapp.dependency.DaggerMainComponent;
+import com.example.android.testapp.dependency.MainComponent;
+import com.example.android.testapp.dependency.ModuleContext;
+import com.example.android.testapp.dependency.ModuleHideProgress;
 import com.example.android.testapp.paging.MainDataFactory;
 import com.example.android.testapp.paging.PagingAdapter;
 import com.example.android.testapp.utils.OnHideProgress;
@@ -34,8 +36,6 @@ public class MainActivity extends AppCompatActivity implements OnHideProgress {
     @BindView(R.id.progress_bar)
     ProgressBar progress;
 
-    MyRetrofit retrofit;
-    MyDatabase database;
     PagingAdapter adapter;
     MainDataFactory dataFactory;
 
@@ -45,12 +45,14 @@ public class MainActivity extends AppCompatActivity implements OnHideProgress {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        retrofit = new MyRetrofit();
-        database = new MyDatabase(this);
+        MainComponent mainComponent = DaggerMainComponent.builder()
+                .moduleHideProgress(new ModuleHideProgress(this))
+                .moduleContext(new ModuleContext(this))
+                .build();
+
+        dataFactory = new MainDataFactory(mainComponent);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        dataFactory = new MainDataFactory(retrofit, database, this);
 
         /**PagedList with liveData*/
         PagedList.Config config = new PagedList.Config.Builder()
@@ -96,7 +98,14 @@ public class MainActivity extends AppCompatActivity implements OnHideProgress {
      */
     @Override
     public void hideProgress() {
-        progress.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progress.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        });
+        Log.d("myLogs", "hideProgress");
+
     }
 }

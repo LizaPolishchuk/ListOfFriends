@@ -1,19 +1,22 @@
 package com.example.android.testapp.paging;
 
 import android.arch.paging.PositionalDataSource;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.android.testapp.data.Person;
 import com.example.android.testapp.data.otherPersonData.Results;
-import com.example.android.testapp.database.MyDatabase;
-import com.example.android.testapp.network.MyRetrofit;
+import com.example.android.testapp.database.DatabaseHelper;
+import com.example.android.testapp.network.ApiPerson;
 import com.example.android.testapp.utils.CheckingConnection;
 import com.example.android.testapp.utils.OnHideProgress;
 import com.example.android.testapp.utils.WorkWithDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,11 +25,18 @@ import retrofit2.Response;
 public class MainDataSource extends PositionalDataSource<Person> {
 
     private static List<Person> personList = new ArrayList<>();
-    private MyRetrofit retrofit;
-    private MyDatabase database;
+    private ApiPerson retrofit;
+    private DatabaseHelper database;
     private OnHideProgress onHideProgress;
+    private Context context;
 
-    public MainDataSource(MyRetrofit retrofit, MyDatabase database, OnHideProgress onHideProgress) {
+    public MainDataSource(OnHideProgress onHideProgress){
+        this.onHideProgress = onHideProgress;
+    }
+
+    @Inject
+    public MainDataSource(Context context, ApiPerson retrofit, DatabaseHelper database, OnHideProgress onHideProgress) {
+        this.context = context;
         this.retrofit = retrofit;
         this.database = database;
         this.onHideProgress = onHideProgress;
@@ -46,9 +56,9 @@ public class MainDataSource extends PositionalDataSource<Person> {
      * Getting the data from Retrofit or Database
      */
     private void getData(int count, final int position, final LoadInitialCallback<Person> callback, final LoadRangeCallback<Person> callbackRange) {
-        if (CheckingConnection.hasConnection()) {
+        if (CheckingConnection.hasConnection(context)) {
 
-            retrofit.getApiPerson().results(count).enqueue(new Callback<Results>() {
+            retrofit.results(count).enqueue(new Callback<Results>() {
                 @Override
                 public void onResponse(Call<Results> call, Response<Results> response) {
                     assert response.body() != null;
@@ -68,8 +78,9 @@ public class MainDataSource extends PositionalDataSource<Person> {
                 }
             });
         } else {
-            onHideProgress.hideProgress();
+            Log.d("myLogs", "MainDataSource no connection");
             if (callbackRange == null) {
+                onHideProgress.hideProgress();
                 personList.addAll(WorkWithDatabase.getPersonList(database));
                 callback.onResult(personList, position);
             } else {

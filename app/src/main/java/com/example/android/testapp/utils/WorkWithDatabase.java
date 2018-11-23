@@ -3,7 +3,7 @@ package com.example.android.testapp.utils;
 import android.os.AsyncTask;
 
 import com.example.android.testapp.data.Person;
-import com.example.android.testapp.database.MyDatabase;
+import com.example.android.testapp.database.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class WorkWithDatabase {
 
     private static List<Person> personList = new ArrayList<>();
 
-    public static void putData(final MyDatabase database, final List<Person> personList) {
+    public static void putData(final DatabaseHelper database, final List<Person> personList) {
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -31,7 +31,7 @@ public class WorkWithDatabase {
         executor.execute(runnable);
     }
 
-    public static List<Person> getPersonList(final MyDatabase database) {
+    public static List<Person> getPersonList(final DatabaseHelper database) {
         AsyncTask<Void, Void, List<Person>> task = new AsyncTask<Void, Void, List<Person>>() {
             @Override
             protected List<Person> doInBackground(Void... voids) {
